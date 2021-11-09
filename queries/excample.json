@@ -1,0 +1,36 @@
+{
+    "id": "?",
+    "timerange": {
+        "type": "keyword",
+        "keyword": "last 7 days"
+    },
+    "query": {
+        "type": "elasticsearch",
+        "query_string": "<query>"
+    },
+    "search_types": [
+        {
+            "id": "?",
+            "name": "<name>",
+            "rollup": false,
+            "row_groups": [{
+                "field": "remote-ip",
+                "limit": 15,
+                "type": "values"
+            }],
+            "series": [],
+            "sort": [],
+            "streams": [],
+            "type": "pivot"
+        }
+    ],
+    "filter": {
+        "type": "or",
+        "filters": [
+            {
+                "type": "stream",
+                "id": "<stream-id>"
+            }
+        ]
+    }
+}
