@@ -25,22 +25,23 @@ class Chain:
     def add(self, rule):
         parameters = [self.ipTables, "-A", self.name]
         self._add_rule_parameters(parameters, rule)
-        syslog.syslog(syslog.LOG_INFO, "Add rule to chain %s - %s" % (self.name, rule))
+        syslog.syslog(syslog.LOG_DEBUG, "Add rule to chain %s - %s" % (self.name, rule))
         call(parameters)
 
     def insert(self, position, rule):
         parameters = [self.ipTables, "-I", self.name, str(position)]
         self._add_rule_parameters(parameters, rule)
-        syslog.syslog(syslog.LOG_INFO, "Insert rule to chain %s pos %d - %s" % (self.name, position, rule))
+        syslog.syslog(syslog.LOG_DEBUG, "Insert rule to chain %s pos %d - %s" % (self.name, position, rule))
         call(parameters)
 
     def remove(self, rule):
         parameters = [self.ipTables, "-D", self.name]
         self._add_rule_parameters(parameters, rule)
-        syslog.syslog(syslog.LOG_INFO, "Remove rule from chain %s - %s" % (self.name, rule))
+        syslog.syslog(syslog.LOG_DEBUG, "Remove rule from chain %s - %s" % (self.name, rule))
         call(parameters)
 
     def flush(self):
+        syslog.syslog(syslog.LOG_DEBUG, "Flush chain %s" % self.name)
         call([self.ipTables, "-F", self.name])
 
     @staticmethod

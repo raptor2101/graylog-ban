@@ -30,4 +30,5 @@ class Rule:
         self.comment = match.group(9)
 
     def __str__(self):
-        return "proto=%s src=%s dst=%s action=%s" % (self.protocol, self.source, self.destination, self.action)
+        return "proto=%s src=%s dst=%s action=%s comment=%s" % (
+            self.protocol, self.source, self.destination, self.action, self.comment)
