@@ -27,7 +27,7 @@ ipAddresses = dict()
 for file in glob("%s/*.json" % sys.argv[3]):
     with open(file) as json_file:
         query = json.load(json_file)
-        report = graylog.IpReport(searchApi.query(query))
+        report = graylog.IpReport(query, searchApi.query(query))
         for ipAddress in report.ipAddresses:
             if ipAddress in ipAddresses:
                 ipAddresses[ipAddress].append(report.name)
