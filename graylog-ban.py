@@ -11,14 +11,13 @@ def build_commend(source_list):
     return " ".join(source_list)
 
 
-if len(sys.argv) < 6:
+if len(sys.argv) < 4:
     exit(-1)
 
 syslog.openlog(facility=syslog.LOG_LOCAL0)
 
 server = sys.argv[1]
 token = sys.argv[2]
-action = sys.argv[5]
 
 searchApi = graylog.Api(server, token)
 
@@ -46,7 +45,15 @@ for file in files:
                 ipAddresses[ipAddress] = [report.name]
 
 syslog.syslog(syslog.LOG_DEBUG, "%d IPs loaded." % len(ipAddresses))
+if len(sys.argv) < 6:
+    print("No firewall parameters given. Just printing the loaded IPs")
+    for ipAddress in ipAddresses:
+        sources = build_commend(ipAddresses[ipAddress])
+        print("%s - %s" % (ipAddress, sources))
+    exit(0)
+
 chain = firewall.Chain(sys.argv[4])
+action = sys.argv[5]
 
 rules = list(chain.list())
 syslog.syslog(syslog.LOG_DEBUG, "%d Firewall rules loaded." % len(rules))
@@ -69,7 +76,7 @@ for rule in rules:
 syslog.syslog(syslog.LOG_DEBUG, "%d new IPs detected. Adding them" % len(ipAddresses))
 
 for ipAddress in ipAddresses:
-    comment = build_commend(ipAddresses[ipAddress]);
+    comment = build_commend(ipAddresses[ipAddress])
     syslog.syslog(syslog.LOG_INFO, "Creating rule for IP %s (present in sources [%s])" % (ipAddress, comment))
     rule = firewall.Rule()
     rule.action = action
