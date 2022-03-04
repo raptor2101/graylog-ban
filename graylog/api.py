@@ -2,6 +2,7 @@ import requests
 import json
 import syslog
 
+
 class Api:
     def __init__(self, server, token):
         self.url = f"{server}/api/views/search/sync"
@@ -20,4 +21,3 @@ class Api:
             syslog.syslog(syslog.LOG_ERR, "Unable to process query. ErrorMessage: %s." % response.content)
         else:
             syslog.syslog(syslog.LOG_ERR, "Unable to process query. StatusCode: %d." % response.status_code)
-
