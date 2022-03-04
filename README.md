@@ -4,7 +4,7 @@ Like fail2ban, graylog-ban generates drop rules out of graylog-sources. Other th
 
 ## usage
 ```
-graylog-ban.py <graylog-api-host> <api-token> <query-source-location> <firewall-chain> <firewall-action>
+graylog-ban.py <graylog-api-host> <api-token> <query-source-location> <whitelist-file> <firewall-chain> <firewall-action>
 ```
 
 1. JSON files in the <query-source-location> will be loaded and queried against the graylog server. All IPs will be loaded from the results. IPs occurring multiple times will only counted once's.
@@ -118,5 +118,5 @@ graylog-queries/postfix.json
 ```
 ### cron-rule
 ```
-*/15    *       * * *     root /<path>/graylog-ban.py <graylogserver> <api-key> graylog-queries dynamic-blocker DROPLOG
+*/15    *       * * *     root /<path>/graylog-ban.py <graylogserver> <api-key> graylog-queries whitelist  dynamic-blocker DROPLOG
 ```
