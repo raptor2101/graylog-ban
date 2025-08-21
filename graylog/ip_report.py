@@ -17,7 +17,7 @@ class IpReport:
                     continue
                 ip = ip_address(row["key"][0])
                 if not ip.is_global:
-                    logger.warning("%s reports a non-public address" % self.name)
+                    logger.warning("%s reports a non-public address %s" % (self.name, ip))
                     continue
                 self.ipAddresses.add(ip)
 
