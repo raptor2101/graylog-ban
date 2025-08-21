@@ -1,4 +1,6 @@
 import re
+from ipaddress import ip_address
+from ipaddress import ip_network
 
 __regex__ = re.compile("^\\s+(\\d+)\\s+\\d+\\w? (\\w+)\\s+(\\w+)\\s+--\\s+\\*\\s+\\*\\s+(\\d+\\.\\d+\\.\\d+\\.\\d+(/\\d+)?)\\s+(\\d+\\.\\d+\\.\\d+\\.\\d+(/\\d+)?)\\s+(/\\* (.*?) \\*/)?")
 
@@ -24,10 +26,16 @@ class Rule:
         self.hits = match.group(1)
         self.action = match.group(2)
         self.protocol = match.group(3)
-        self.source = match.group(4)
-        self.destination = match.group(6)
+        self.source = self._parse_ip_address(match.group(4))
+        self.destination = self._parse_ip_address(match.group(6))
         self.comment = match.group(9)
 
     def __str__(self):
         return "proto=%s src=%s dst=%s action=%s comment=%s" % (
             self.protocol, self.source, self.destination, self.action, self.comment)
+
+    @staticmethod
+    def _parse_ip_address(string):
+        if '/' in string:
+            return ip_network(string)
+        return ip_address(string)

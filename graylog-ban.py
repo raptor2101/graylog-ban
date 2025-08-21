@@ -84,13 +84,17 @@ chain = firewall.Chain(sys.argv[5], logger.getChild("Firewall.Chain"))
 action = sys.argv[6]
 
 rules = list(chain.list())
-logging.debug("%d Firewall rules loaded." % len(rules))
+logger.debug("%d Firewall rules loaded." % len(rules))
+
+deleted = 0
+updated = 0
 for rule in rules:
     if rule.action != action:
         continue
     if rule.source not in ipAddresses:
         logger.info("IP %s not present in any source. Dropping rule!" % rule.source)
         chain.remove(rule)
+        deleted += 1
     else:
         comment = build_commend(ipAddresses[rule.source])
 
@@ -99,6 +103,7 @@ for rule in rules:
             chain.remove(rule)
             rule.comment = comment
             chain.insert(1, rule)
+            updated += 1
         del ipAddresses[rule.source]
 
 logger.debug("%d new IPs detected. Adding them" % len(ipAddresses))
@@ -111,3 +116,5 @@ for ipAddress in ipAddresses:
     rule.source = ipAddress
     rule.comment = comment
     chain.insert(1, rule)
+
+logger.info("%d IPs blocked. (created: %d updated: %d deleted:%d)" % (len(rules), len(ipAddresses), updated, deleted))
