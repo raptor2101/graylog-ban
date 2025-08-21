@@ -92,7 +92,7 @@ for rule in rules:
     if rule.action != action:
         continue
     if rule.source not in ipAddresses:
-        logger.info("IP %s not present in any source. Dropping rule!" % rule.source)
+        logger.info("IP %s not present in any source. Dropping rule (comment: %s)!" % (rule.source, rule.comment))
         chain.remove(rule)
         deleted += 1
     else:
