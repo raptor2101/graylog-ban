@@ -2,12 +2,12 @@ import requests
 import json
 
 class Api:
-    def __init__(self, server, token, verify_server_sert, logger):
+    def __init__(self, server, token, verify_server_cert, logger):
         self.url = f"{server}/api/views/search/sync"
         self.auth_token = (token, "token")
         self.headers = {"Content-Type": "application/json", "X-Requested-By": "jupyter"}
         self.logger = logger
-        self.verifyServerCert = verify_server_sert
+        self.verifyServerCert = verify_server_cert
 
     def query(self, query):
         payload = {
